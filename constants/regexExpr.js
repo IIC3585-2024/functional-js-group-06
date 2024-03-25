@@ -1,6 +1,6 @@
 const regexPatterns = {
   headers: /^(#{1,6})\s+(.*?)\s*$/gm,
-  blockquotes: /^(> )(.*)$/gm,
+  blockquotes: /^(>+)(.*?)$/gm,
   unorderedList: /^(\s*)[-+*]\s+(.*)$/gm,
   orderedList: /^(\s*)\d+\.\s+(.*)$/gm,
   bold: /(\*\*|__)(.*?)\1/g,
