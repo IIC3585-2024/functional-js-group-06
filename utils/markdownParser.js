@@ -18,42 +18,42 @@ const convertUnorderedList = createConverter(regexPatterns.unorderedListItems, (
 const convertOrderedList = createConverter(regexPatterns.orderedListItems, (match) => `<ol>${match}</ol>`);
 
 const convertQuickLinks = createConverter(regexPatterns.quickLinks, (match, content) => {
-    const isEmail = content.includes('@');
-    return isEmail ? `<a href="mailto:${content}">${content}</a>` : `<a href="${content}">${content}</a>`;
+  const isEmail = content.includes('@');
+  return isEmail ? `<a href="mailto:${content}">${content}</a>` : `<a href="${content}">${content}</a>`;
 });
 
 const convertUnorderedListItem = createConverter(
-    regexPatterns.unorderedList,
-    (_, indentation, content) => `<li style="margin-left: ${Math.floor(indentation.length / 4) * 2 }em;">${content}</li>`
+  regexPatterns.unorderedList,
+  (_, indentation, content) => `<li type="unordered" style="margin-left: ${Math.floor(indentation.length / 4) * 2}em;">${content}</li>`
 );
 const convertOrderedListItem = createConverter(
-    regexPatterns.orderedList,
-    (_, indentation, content) => `<li style="margin-left: ${Math.floor(indentation.length / 4) * 2}em;">${content}</li>`
+  regexPatterns.orderedList,
+  (_, indentation, content) => `<li type="ordered" style="margin-left: ${Math.floor(indentation.length / 4) * 2}em;">${content}</li>`
 );
 
 const convertHeaders = createConverter(
-    regexPatterns.headers,
-    (match, hashes, content) => `<h${hashes.length}>${content}</h${hashes.length}>`
+  regexPatterns.headers,
+  (match, hashes, content) => `<h${hashes.length}>${content}</h${hashes.length}>`
 );
 
 const convertMarkdownToHtml = (markdown) => {
-    return [
-        convertQuickLinks,
-        convertBlockquotes,
-        convertUnorderedListItem,
-        convertUnorderedList,
-        convertOrderedListItem,
-        convertOrderedList,
-        convertHeaders,
-        convertBold,
-        convertItalics,
-        convertStrikethrough,
-        convertImages,
-        convertLinks,
-        convertPre,
-        convertCode,
-        convertBreakline
-    ].reduce((text, converter) => converter(text), markdown);
-}
+  return [
+    convertQuickLinks,
+    convertBlockquotes,
+    convertHeaders,
+    convertBold,
+    convertItalics,
+    convertStrikethrough,
+    convertImages,
+    convertLinks,
+    convertPre,
+    convertCode,
+    convertUnorderedListItem,
+    convertUnorderedList,
+    convertOrderedListItem,
+    convertOrderedList,
+    convertBreakline
+  ].reduce((text, converter) => converter(text), markdown);
+};
 
 export default convertMarkdownToHtml;
