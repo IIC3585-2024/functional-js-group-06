@@ -67,21 +67,15 @@ En***treme***dio.
 
 Aqui podemos meter `codigo` entremedio del parrafo.
 
-    Esto vendria siendo un bloque de codigo
-    x = 2 + 3
-
-``Usando `comillas` dentro del codigo``
-
-```
-# Este sigue siendo un bloque de codigo
-# Pero sin indentar
-let x = 0
-```
+```   
+Esto vendria siendo un bloque de codigo
+x = 2 + 3
+``` 
 
 Revisando como se ve un link [Este es el link](https://www.google.com/).
 
 <mailconlink@gmail.com>
 
-![alt text](image.jpg)
+![alt text](../tests/image.jpg)
 
-[![imagen con link](image.jpg)](https://www.google.com/)
+[![imagen con link](../tests/image.jpg)](https://www.google.com/)
