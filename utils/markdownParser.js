@@ -1,6 +1,5 @@
 import regexPatterns from '../constants/regexExpr.js';
-
-const createConverter = (regex, replacement) => (text) => text.replace(regex, replacement);
+import createConverter from './createConverter.js';
 
 const convertBold = createConverter(regexPatterns.bold, '<strong>$2</strong>');
 const convertItalics = createConverter(regexPatterns.italics, '<em>$2</em>');
@@ -12,7 +11,18 @@ const convertImages = createConverter(regexPatterns.images, '<img src="$2" alt="
 const convertPre = createConverter(regexPatterns.pre, '<pre>$1</pre>');
 const convertCode = createConverter(regexPatterns.code, '<code>$1</code>');
 const convertBreakline = createConverter(regexPatterns.breakline, '<br>');
-const convertBlockquotes = createConverter(regexPatterns.blockquotes, (_, marker, content) => `<blockquote>${content}</blockquote>`);
+
+const convertBlockquoteItems = createConverter(regexPatterns.blockquotes, (match, marker, content) => {
+  const level = marker.length;
+  let result = content;
+  for (let i = 0; i < level; i++) {
+    result = `<blockquote>${result}</blockquote>`;
+  }
+  return result;
+});
+const flattenBlockquotes = (text) => {
+  return text.replace(/<\/blockquote>\s*<blockquote>/g, '<br>');
+};
 
 const convertUnorderedList = createConverter(regexPatterns.unorderedListItems, (match) => `<ul>${match}</ul>`);
 const convertOrderedList = createConverter(regexPatterns.orderedListItems, (match) => `<ol>${match}</ol>`);
@@ -39,7 +49,7 @@ const convertHeaders = createConverter(
 const convertMarkdownToHtml = (markdown) => {
   return [
     convertQuickLinks,
-    convertBlockquotes,
+    convertBlockquoteItems,
     convertHeaders,
     convertBold,
     convertItalics,
@@ -52,7 +62,8 @@ const convertMarkdownToHtml = (markdown) => {
     convertUnorderedList,
     convertOrderedListItem,
     convertOrderedList,
-    convertBreakline
+    convertBreakline,
+    flattenBlockquotes
   ].reduce((text, converter) => converter(text), markdown);
 };
 
